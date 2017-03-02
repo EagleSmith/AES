@@ -529,10 +529,18 @@ for (j = 0; j < loops; j += 1){
   if (p_pad && (j == (loops  - 1)) ) { outp = N_BLOCK - pad; }
   for (i = 0; i < outp; i++)
   {
-    printf_P(PSTR("%c"),output[j*N_BLOCK + i]);
+	#if not defined(ESP8266)
+		printf_P(PSTR("%c"),output[j*N_BLOCK + i]);
+	#else
+		Serial.printf("%c",output[j*N_BLOCK + i]);
+	#endif
   }
 }
-  printf_P(PSTR("\n"));
+	#if not defined(ESP8266)
+		printf_P(PSTR("\n"));
+	#else
+		Serial.printf("\n");
+	#endif
 }
 
 /******************************************************************************/
@@ -541,11 +549,38 @@ void AES::printArray(byte output[],int sizel)
 {
   for (int i = 0; i < sizel; i++)
   {
-    printf_P(PSTR("%x"),output[i]);
+	#if not defined(ESP8266)
+		printf_P(PSTR("%x"),output[i]);
+	#else
+		Serial.printf("%x",output[i]);
+	#endif
   }
-  printf_P(PSTR("\n"));
+  #if not defined(ESP8266)
+	printf_P(PSTR("\n"));
+  #else
+	Serial.printf("\n");
+  #endif
+	
 }
 
+
+/******************************************************************************/
+
+String AES::printToString(byte output[],bool p_pad)
+{
+	uint8_t i,j;
+	uint8_t loops = size/N_BLOCK;
+	uint8_t outp = N_BLOCK;
+	String outp_str;
+	for (j = 0; j < loops; j += 1){
+	  if (p_pad && (j == (loops  - 1)) ) { outp = N_BLOCK - pad; }
+	  for (i = 0; i < outp; i++)
+	  {
+		outp_str += char(output[j*N_BLOCK + i]);
+	  }
+	}
+	return outp_str;
+}
 
 /******************************************************************************/
 

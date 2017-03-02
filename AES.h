@@ -230,6 +230,16 @@ class AES
 	*/
 	void printArray(byte output[],bool p_pad = true);
 	
+	/** Prints the array given to a String.
+	 * 
+	 * This function prints the given array and pad, 
+	 * It is mainlly used for debugging purpuses or to output the string.
+	 * 
+	 * @param output[] the string of the text in a byte array
+	 * @param p_pad optional, used to print with out the padding characters
+	*/
+	String printToString(byte output[],bool p_pad = true);
+	
 	/** Prints the array given.
 	 * 
 	 * This function prints the given array in Hexadecimal.

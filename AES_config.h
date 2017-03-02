@@ -29,8 +29,9 @@
 	typedef unsigned char byte;
 	#define printf_P printf
 	#define PSTR(x) (x)
-#else
-	#include <avr/pgmspace.h>
+#elseif defined(ESP8266)
+	#include <pgmspace.h>
+#else #include <avr/pgmspace.h>
 #endif
 
 #define N_ROW                   4
