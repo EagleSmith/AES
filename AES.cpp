@@ -552,7 +552,7 @@ void AES::printArray(byte output[],int sizel)
 	#if not defined(ESP8266)
 		printf_P(PSTR("%x"),output[i]);
 	#else
-		Serial.printf("%x",output[i]);
+		Serial.printf("%c",output[i]);
 	#endif
   }
   #if not defined(ESP8266)
@@ -581,6 +581,57 @@ String AES::printToString(byte output[],bool p_pad)
 	}
 	return outp_str;
 }
+
+/******************************************************************************/
+
+String AES::printToHEXString(byte output[],bool p_pad)
+{
+	uint8_t i,j;
+	uint8_t loops = size/N_BLOCK;
+	uint8_t outp = N_BLOCK;
+	String outp_str;
+	for (j = 0; j < loops; j += 1){
+	  if (p_pad && (j == (loops  - 1)) ) { outp = N_BLOCK - pad; }
+	  for (i = 0; i < outp; i++)
+	  {
+		Serial.printf("Char %i: ",i); Serial.println(char(output[j*N_BLOCK + i]));
+		Serial.printf("Bin %i: ",i); Serial.println(String(output[j*N_BLOCK + i], BIN));
+		outp_str += (output[j*N_BLOCK + i]<0x10)? String("0" + String(output[j*N_BLOCK + i], HEX)): String(output[j*N_BLOCK + i], HEX);
+		Serial.printf("Hex %i: ",i); Serial.println((output[j*N_BLOCK + i]<=0x10)? String("0" + String(output[j*N_BLOCK + i], HEX)): String(output[j*N_BLOCK + i], HEX));
+		
+	  }
+	}
+	return outp_str;
+} 
+
+/******************************************************************************/
+
+String AES::printToHEXString(byte output[],int sizel)
+{
+  String outp_str;
+  for (int i = 0; i < sizel; i++)
+  {
+	//Serial.printf("Char %i: ",i); Serial.println(char(output[i]));
+	//Serial.printf("Bin %i: ",i); Serial.println(String(output[i], BIN));
+	outp_str += (output[i]<0x10)? String("0" + String(output[i], HEX)): String(output[i], HEX);
+	//Serial.printf("Hex %i: ",i); Serial.println((output[i]<=0x10)? String("0" + String(output[i], HEX)): String(output[i], HEX));
+  }
+  return outp_str;
+}
+
+ 
+/******************************************************************************/
+
+String AES::printToString(byte output[],int sizel)
+{
+  String outp_str;
+  for (int i = 0; i < sizel; i++)
+  {
+	outp_str += char(output[i]);
+  }
+  return outp_str;
+}
+
 
 /******************************************************************************/
 
